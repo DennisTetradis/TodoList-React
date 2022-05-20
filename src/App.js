@@ -3,22 +3,24 @@ import "./App.css";
 import TodoForm from "./components/TodoForm.js";
 import TodoList from "./components/TodoList.js";
 
-// const LOCAL_STORAGE_KEY = "react-todo-list-todos";
-
 function App() {
   const [todos, setTodos] = useState([]);
-
-  // useEffect(() => {
-  //   const storageTodos = JSON.parse(
-  //     localStorage.getItem("react-todo-list-todos")
-  //   );
-  //   if (storageTodos) {
-  //     setTodos(storageTodos);
-  //   }
-  // }, []);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    localStorage.setItem("react-todo-list-todos", JSON.stringify(todos));
+    const storageTodos = JSON.parse(
+      localStorage.getItem("react-todo-list-todos")
+    );
+    if (storageTodos) {
+      setTodos(storageTodos);
+      setIsLoaded(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isLoaded) {
+      localStorage.setItem("react-todo-list-todos", JSON.stringify(todos));
+    }
   }, [todos]);
 
   const addTodo = (todo) => {
